@@ -1,0 +1,31 @@
+# Private data, generated datasets, model artifacts, and run outputs
+data/raw/
+data/derived/
+datasets/
+checkpoints/
+outputs/
+logs/
+artifacts/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bag
+*.db3
+
+# Local configuration and Python files
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+.pytest_cache/
+.ruff_cache/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

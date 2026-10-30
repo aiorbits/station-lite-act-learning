@@ -1,0 +1,27 @@
+task: station_lite_block_pick_place
+dataset:
+  fps: 30
+  train_root: datasets/station_lite_train
+  train_repo_id: student/station_lite_train
+  holdout_root: datasets/station_lite_holdout
+  holdout_repo_id: student/station_lite_holdout
+observation:
+  state_dim: 14
+  cameras:
+    - observation.images.cam_high
+    - observation.images.cam_left_wrist
+    - observation.images.cam_right_wrist
+action:
+  dim: 14
+  gripper_units: metres
+  gripper_closed: 0.0
+  gripper_open: 0.08
+policy:
+  type: act
+  chunk_size: 50
+  seed: 42
+training:
+  steps: 20000
+  batch_size: 4
+  internal_eval_split: 0.13
+  checkpoint_interval: 2000

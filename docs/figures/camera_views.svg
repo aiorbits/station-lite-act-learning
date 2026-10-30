@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="390" viewBox="0 0 1080 390" role="img" aria-labelledby="title desc">
+  <title id="title">Schematic Station Lite camera views</title>
+  <desc id="desc">Three schematic panels show an overhead workspace camera and left and right wrist cameras looking toward a block and target.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f6f8fa; }
+      .panel { fill: #ffffff; stroke: #c9d1d9; stroke-width: 2; }
+      .title { font-family: sans-serif; font-size: 20px; font-weight: 700; fill: #1f2328; }
+      .label { font: 14px sans-serif; fill: #57606a; }
+      .table { fill: #e8dfd0; stroke: #b7aa97; stroke-width: 2; }
+      .arm { fill: none; stroke: #495a6a; stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; }
+      .arm2 { fill: none; stroke: #718399; stroke-width: 12; stroke-linecap: round; }
+      .grip { stroke: #263746; stroke-width: 6; stroke-linecap: round; }
+      .block { fill: #c94c45; stroke: #963530; stroke-width: 2; }
+      .target { fill: #f3c969; stroke: #a77a20; stroke-width: 2; }
+      .camera { fill: #25384a; }
+      .field { fill: #4c9b87; fill-opacity: .12; stroke: #4c9b87; stroke-width: 2; stroke-dasharray: 7 6; }
+      .arrow { stroke: #4c9b87; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4c9b87"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1080" height="390" rx="18"/>
+
+  <g transform="translate(20 18)">
+    <rect class="panel" width="330" height="350" rx="14"/>
+    <text class="title" x="22" y="36">High camera</text>
+    <text class="label" x="22" y="58">Workspace context and task layout</text>
+    <rect class="table" x="42" y="92" width="246" height="214" rx="8"/>
+    <path class="field" d="M72 111 L255 111 L274 287 L54 287 Z"/>
+    <rect class="target" x="226" y="135" width="34" height="30" rx="3"/>
+    <text class="label" x="213" y="128">Target</text>
+    <rect class="block" x="151" y="194" width="31" height="31" rx="3"/>
+    <text class="label" x="141" y="244">Block</text>
+    <path class="arm" d="M80 294 L96 254 L116 232"/>
+    <path class="arm2" d="M250 294 L234 254 L213 231"/>
+    <path class="grip" d="M109 226 L119 217 M109 226 L121 234 M220 225 L210 216 M220 225 L208 233"/>
+    <rect class="camera" x="143" y="69" width="44" height="18" rx="4"/>
+    <path class="arrow" d="M165 88 L165 132"/>
+  </g>
+
+  <g transform="translate(375 18)">
+    <rect class="panel" width="330" height="350" rx="14"/>
+    <text class="title" x="22" y="36">Left wrist camera</text>
+    <text class="label" x="22" y="58">Local view near the left gripper</text>
+    <rect class="table" x="28" y="238" width="274" height="66" rx="7"/>
+    <path class="field" d="M86 210 L280 210 L294 280 L59 280 Z"/>
+    <rect class="target" x="244" y="219" width="30" height="25" rx="3"/>
+    <rect class="block" x="178" y="226" width="27" height="27" rx="3"/>
+    <path class="arm" d="M36 160 L91 171 L143 198"/>
+    <path class="arm2" d="M142 198 L175 215"/>
+    <path class="grip" d="M170 207 L178 198 M170 207 L179 218"/>
+    <rect class="camera" x="38" y="103" width="40" height="24" rx="5"/>
+    <path class="arrow" d="M80 119 L142 173"/>
+    <text class="label" x="28" y="329">Watch approach, contact, and occlusion</text>
+  </g>
+
+  <g transform="translate(730 18)">
+    <rect class="panel" width="330" height="350" rx="14"/>
+    <text class="title" x="22" y="36">Right wrist camera</text>
+    <text class="label" x="22" y="58">Local view near the right gripper</text>
+    <rect class="table" x="28" y="238" width="274" height="66" rx="7"/>
+    <path class="field" d="M51 210 L245 210 L271 280 L36 280 Z"/>
+    <rect class="target" x="62" y="219" width="30" height="25" rx="3"/>
+    <rect class="block" x="129" y="226" width="27" height="27" rx="3"/>
+    <path class="arm" d="M294 160 L239 171 L187 198"/>
+    <path class="arm2" d="M188 198 L159 215"/>
+    <path class="grip" d="M164 207 L156 198 M164 207 L155 218"/>
+    <rect class="camera" x="252" y="103" width="40" height="24" rx="5"/>
+    <path class="arrow" d="M250 119 L190 173"/>
+    <text class="label" x="28" y="329">Watch grasp, lift, transport, and release</text>
+  </g>
+</svg>
