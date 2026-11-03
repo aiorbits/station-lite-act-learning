@@ -6,7 +6,7 @@ A small, reproducible ACT project for students working on a Station Lite pick-an
 
 ## What you will learn
 
-1. Understand the observation/action contract and verify a demonstration dataset.
+1. Collect successful demonstrations and verify their data, camera, and task quality.
 2. Keep training, internal evaluation, and untouched holdout episodes separate.
 3. Convert raw demonstrations to LeRobot format and train an ACT baseline.
 4. Measure action prediction quality on held-out episodes, per episode and by prediction horizon.
@@ -20,7 +20,7 @@ For a visual walkthrough of the camera inputs, 14-value state/action layout, and
 
 ```mermaid
 flowchart LR
-    A[Raw demonstrations] --> B[Validate and split]
+    A[Step 0: Collect Data] --> B[Validate and split]
     B --> C[Convert to LeRobot]
     C --> D[Train ACT]
     D --> E[Evaluate on untouched holdout]
@@ -67,6 +67,16 @@ PY
 ```
 
 On the robot computer, activate the existing environment and verify the camera service and robot SDK using the lab's approved hardware checklist. Do not start a motion script until the workspace and robot are clear.
+
+## Step 0: Collect Data
+
+Before validating, converting, or training, record demonstrations using the [ACT data-collection guide](docs/data-collection-guide.md). Lock the task definition, target location, robot start pose, task arm, camera views, and lighting; intentionally vary only the conditions named in your experiment plan. Use a consistent, natural demonstration pace and the same approach → grasp → lift → transport → place → release sequence. Cover the planned start spots, rotate between spots, and record one grasp attempt per episode. Do not retry a failed grasp within the same episode.
+
+Keep each vendor-generated episode directory name unchanged. The expected pattern is `zc0_touch_<YYYYMMDD>_<HHMMSS>_<station>_<nnn>`; use this folder name as the episode ID in a private manifest. Record the session, task arm, start spot, outcome, measured frame rate, quality-check result, and planned split. Keep recordings, manifests, checkpoints, and logs outside Git.
+
+Check each episode with the repository validator, a camera/frozen-frame and measured-FPS check, and human review of the complete task. Confirm all three 640 × 480 camera images are valid and live, the gripper actually closes, the block and target stay visible, the episode starts from the expected pose, and the block is successfully placed. Move failed or questionable takes into a separate reject folder and record the reason; only checked successful episodes can enter training or holdout.
+
+Split by whole episode before training and freeze the split in the manifest. The reference recipe uses 35 successful training episodes and 10 untouched holdout episodes, spread across the planned start spots and sessions. LeRobot reserves about 13% of the training set for its internal validation loss; this is distinct from the 10-episode holdout. Physical test spots are separate from both recorded splits. Follow the [full collection, quality, naming, and split instructions](docs/data-collection-guide.md).
 
 ## 1. Organize and split demonstrations
 
@@ -180,6 +190,10 @@ Review both aggregate and per-episode results. Position MAE is mean absolute end
 
 ## 5. Serve the policy and test on the prepared robot
 
+For a copyable three-terminal walkthrough with commented commands, see the [Three-Terminal ACT Deployment Guide](docs/three-terminal-run.md).
+
+
+
 Start the inference server on the GPU computer. Set the path to the selected checkpoint and use the server's reachable LAN address in the client command.
 
 ```bash
@@ -191,7 +205,7 @@ python deployment/station_act_http_server.py \
 
 Check `http://<GPU_HOST>:8008/health` from the robot computer; confirm it reports the intended checkpoint. Start the prepared camera service and check its expected port before running the client. First perform the lab's stationary observation and short-chunk checks. Only proceed to the full pick-and-place command when the workspace is clear and the operator can stop the robot.
 
-Begin with an inference-only dry run. This reads camera images and checks that the policy server responds; it does not initialize or move the robot. The dry-run state is zero-filled, so use it only to check the image/server path.
+Dry run only: captures the three camera images and calls the policy server with a zero-filled 14-value robot state. It does not initialize the robot SDK, read live joint or gripper state, solve IK, or send any robot actions. A successful run should print a prediction shape such as `[loop 0] (50, 14) infer=...`; this confirms only camera-to-server inference connectivity, not the live robot state or safe motion.
 
 ```bash
 conda activate lumosteleop
