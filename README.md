@@ -280,3 +280,22 @@ Check that no recordings, private manifest, checkpoint, log, credential, or loca
 The converter, offline evaluator, inference server, and robot client are adapted from the lab's tested Station Lite workflow. The robot client depends on the locally installed `superbot`, `xr_teleoperate2`, `teleimager`, and StarTouch SDK packages. Environment setup and network/IP configuration are intentionally left to the lab operator.
 
 The repository's documentation, comments, and command-line help are in English. The installed vendor SDK may still emit localized runtime messages.
+
+
+### Short-chunk command: parameter reference
+
+Before using --execute, verify the robot pose, clear the workspace, and clear the path used by the client to return both arms home. Replace <GPU_HOST> with the GPU computer's current reachable IP address.
+
+| Argument | Meaning |
+| --- | --- |
+| deployment/station_lite_client.py | Runs the Station Lite robot client from the repository root. |
+| --server http://<GPU_HOST>:8008 | URL of the ACT inference server. Port 8008 is the server port; use the GPU host address reachable from the robot computer. |
+| --execute | Enables hardware execution. Without it, the client performs inference only; with it, the client initializes both arms, sends motion commands, and returns both arms home on exit. |
+| --loops 1 | Runs one feedback cycle: capture an observation, request a chunk, and execute the configured prefix. This is a short initial test, not a complete pick-and-place run. |
+| --speed 0.2 | Sets the motion speed scalar passed to trajectory execution. In this setup, 0.2 is a conservative setting; exact physical speed depends on the SDK and controller. It does not change policy predictions. |
+| --exec-steps 15 | Executes the first 15 actions from the predicted chunk. The checkpoint chunk contains 50 actions; at a 30 Hz action convention and speed scalar 0.2, the nominal prefix duration is about 2.5 seconds. |
+| --switch-after 10 | Requests the next observation and policy prediction after 10 actions have elapsed, while the current chunk is still executing. At 30 Hz and speed scalar 0.2, this is nominally about 1.67 seconds. |
+| --blend-overlap 5 | Uses 5 overlapping actions to blend adjacent predicted chunks at the switch boundary and reduce a discontinuity. |
+| --margin 0.02 | Applies a 0.02 rad (about 1.15 degrees) margin inside configured joint limits during the client's IK/limit checks. It is not a collision clearance or a guarantee of safety. |
+
+Timing figures are nominal and depend on the client's action-time convention and the robot controller. Keep the operator at the emergency stop and stop immediately if motion differs from the expected path.
